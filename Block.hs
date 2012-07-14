@@ -17,6 +17,10 @@
 module Block (
 				Color(..),
 				Block(..),
+				mbD,
+				mbU,
+				mbR,
+				mbL,
 			)
 	where
 
@@ -33,4 +37,9 @@ data Block = Block {	pos::(Int,Int) ,
 				col :: Color
 }
 
+
+mbD b@(Block (x,y) _) = b{pos=(x,y-1)}
+mbU b@(Block (x,y) _) = b{pos=(x,y+1)}
+mbL b@(Block (x,y) _) = b{pos=(x-1,y)}
+mbR b@(Block (x,y) _) = b{pos=(x+1,y)}
 

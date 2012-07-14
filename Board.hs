@@ -15,7 +15,7 @@
 -}
 
 module Board (
-			Board,
+			Board(..),
 			newBoard
 		) where
 

@@ -24,8 +24,6 @@ newGame n m r = Game (newBoard n m) rand piece pieces
 			
 
 
-
-
 randomPieces ::  RandomGen t => t -> [TetrisPiece]
 randomPieces r = (newPiece (toEnum p) (0,0)) : randomPieces r'
 		where
@@ -33,4 +31,8 @@ randomPieces r = (newPiece (toEnum p) (0,0)) : randomPieces r'
 
 
 
-
+gameNewPiece g@(Game (b) _ p n) = g{piece=s,nextpieces=p}
+		where
+			(s:p) = nextpieces g
+			(x,y) = boardSize b
+			t = s{pos=(x `div` 2,y-1)}

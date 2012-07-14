@@ -14,6 +14,10 @@
   
 -}
 
+module Main (main) where
+
+import Block
+import Display
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.OpenGL
 import Graphics.UI.Gtk.Gdk.Events
@@ -33,7 +37,7 @@ main = do
 	
 	angle <- newIORef 0.0
 	delta <- newIORef 0.1
-	position <- newIORef (0.0, (0.0::GLfloat))
+	posicion <- newIORef (0.0, (0.0::GLfloat))
 	
 	onRealize canvasJuego $ withGLDrawingArea canvasJuego $ \_ -> do
 		clearColor $= (Color4 0.0 0.0 0.0 0.0)
@@ -47,7 +51,7 @@ main = do
 	onExpose canvasJuego $ \_ -> do
 		withGLDrawingArea canvasJuego $ \glwindow -> do
 			clear [DepthBuffer, ColorBuffer]
-			--display angle position
+			display Block { pos = (0,0), col = RED }
 			glDrawableSwapBuffers glwindow
 		return True
  
@@ -65,7 +69,7 @@ main = do
 		clearColor $= (Color4 0.0 0.0 0.0 0.0)
 		matrixMode $= Projection
 		loadIdentity
-		ortho 0.0 1.0 0.0 1.0 (-1.0) 1.0
+		ortho 0.0 1.0 0.0 1.0 (0.0) 1.0
 		depthFunc $= Just Less
 		drawBuffer $= BackBuffers
 	
@@ -73,7 +77,7 @@ main = do
 	onExpose canvasProx $ \_ -> do
 		withGLDrawingArea canvasProx $ \glwindow -> do
 			clear [DepthBuffer, ColorBuffer]
-			--display angle position
+			display Block { pos = (3,0), col = RED }
 			glDrawableSwapBuffers glwindow
 		return True
 	

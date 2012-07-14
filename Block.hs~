@@ -1,0 +1,17 @@
+module Block (
+				Color(..),
+				Block(..),
+			)
+	where
+
+data Color = RED
+			| BLUE
+			| ORANGE
+			| YELLOW
+			| GREEN
+			| PURPLE
+			| CYAN
+
+data Block = Block {	pos::(Int,Int) ,
+				col :: Color
+}

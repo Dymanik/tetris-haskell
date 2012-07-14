@@ -1,6 +1,6 @@
 module Block (
-				Color,
-				Block,
+				Color(..),
+				Block(..),
 			)
 	where
 
@@ -11,6 +11,7 @@ data Color = RED
 			| GREEN
 			| PURPLE
 			| CYAN
+			| GREY
 
 data Block = Block {	position::(Int,Int) ,
 				color :: Color

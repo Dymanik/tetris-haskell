@@ -43,7 +43,6 @@ main = do
 		clearColor $= (Color4 0.0 0.0 0.0 0.0)
 		matrixMode $= Projection
 		loadIdentity
-		ortho 0.0 1.0 0.0 1.0 (-1.0) 1.0
 		depthFunc $= Just Less
 		drawBuffer $= BackBuffers
 		
@@ -51,7 +50,8 @@ main = do
 	onExpose canvasJuego $ \_ -> do
 		withGLDrawingArea canvasJuego $ \glwindow -> do
 			clear [DepthBuffer, ColorBuffer]
-			display Block { pos = (0,0), col = RED }
+			(x,y) <- Graphics.Rendering.OpenGL.get posicion
+			display Block { pos = (round x,round y), col = RED }
 			glDrawableSwapBuffers glwindow
 		return True
  
@@ -67,7 +67,7 @@ main = do
 	
 	onRealize canvasProx $ withGLDrawingArea canvasProx $ \_ -> do
 		clearColor $= (Color4 0.0 0.0 0.0 0.0)
-		matrixMode $= Projection
+		matrixMode $= Modelview 5
 		loadIdentity
 		ortho 0.0 1.0 0.0 1.0 (0.0) 1.0
 		depthFunc $= Just Less
@@ -77,7 +77,8 @@ main = do
 	onExpose canvasProx $ \_ -> do
 		withGLDrawingArea canvasProx $ \glwindow -> do
 			clear [DepthBuffer, ColorBuffer]
-			display Block { pos = (3,0), col = RED }
+			(x,y) <- Graphics.Rendering.OpenGL.get posicion
+			display Block { pos = (round x,round y), col = RED }
 			glDrawableSwapBuffers glwindow
 		return True
 	
@@ -94,10 +95,10 @@ main = do
 	col2 <- vBoxNew False 0
 	boxPackStart caja col1 PackNatural 10
 	boxPackStart caja col2 PackNatural 10
-	boxPackStart col1 canvasJuego PackNatural 20
+	boxPackStart col1 canvasJuego PackRepel 0
 	proxPiezaBox <- vBoxNew False 5
 	boxPackStart col2 proxPiezaBox PackNatural 30
-	boxPackStart proxPiezaBox canvasProx PackNatural 20
+	set proxPiezaBox [containerChild := canvasProx]
 	puntuacionBox <- vBoxNew False 5
 	boxPackStart col2 puntuacionBox PackNatural 50
 	puntuacionLabel <- labelNew (Just "Puntuacion")
@@ -107,6 +108,9 @@ main = do
 	salir <- buttonNewWithLabel "Salir"
 	boxPackEnd col2 salir PackNatural 30
 	widgetShowAll window
+	onKeyPress window $ \(Key _ _ _ _ _ _ _ _ _ v) -> do
+		accTeclado posicion v
+		return True
 	onClicked salir mainQuit
 	onDestroy window mainQuit
 	mainGUI

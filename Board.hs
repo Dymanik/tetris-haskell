@@ -16,7 +16,8 @@
 
 module Board (
 			Board(..),
-			newBoard
+			newBoard,
+			addBlocktoBoard
 		) where
 
 
@@ -44,7 +45,7 @@ instance Show Board where
 newBoard :: Int -> Int -> Board
 newBoard n m = Board (n,m) borders
 		where
-			borders = F.foldr (addBlock ) M.empty borderblocks
+			borders = F.foldl' (flip addBlock ) M.empty borderblocks
 			borderblocks = l S.>< b S.>< r
 			l = S.fromList [Block (0,y) GREY | y <- [1..m-1]]
 			r = S.fromList [Block (n-1,y) GREY | y <- [1..m-1]]
@@ -54,4 +55,6 @@ newBoard n m = Board (n,m) borders
 addBlock :: Block -> M.Map (Int, Int) Block -> M.Map (Int, Int) Block
 addBlock  b@(Block x _) = M.insert x b 
 
+addBlocktoBoard ::  Block -> Board -> Board
+addBlocktoBoard block bo = bo{boardBlocks= addBlock block $boardBlocks bo}
 

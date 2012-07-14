@@ -8,31 +8,36 @@ import System.Random
 
 data Game = Game{
 				board :: Board,
-				seed :: StdGen,
 				piece :: TetrisPiece,
-				nextpieces :: [TetrisPiece]
+				nextpieces :: [BlockType]
 			}
 
 
 
 newGame ::  Int -> Int -> Int -> Game
-newGame n m r = Game (newBoard n m) rand piece pieces
+newGame n m r = Game (newBoard n m) firstpiece shapes
 		where
 			rand = mkStdGen r
-			(piece:pieces)= randomPieces rand
+			(shape:shapes)= randomPieces rand
+			firstpiece =  newPiece shape (n `div` 2, m-1)
 
 			
 
 
-randomPieces ::  RandomGen t => t -> [TetrisPiece]
-randomPieces r = (newPiece (toEnum p) (0,0)) : randomPieces r'
+randomPieces r = (toEnum p) : randomPieces r'
 		where
 			(p,r') = randomR (0,6) r
 
 
 
-gameNewPiece g@(Game (b) _ p n) = g{piece=s,nextpieces=p}
+gameNewPiece ::  Game -> Game
+gameNewPiece g@(Game (b) p n) = g{piece=s,nextpieces=p}
 		where
-			(s:p) = nextpieces g
+			(s,p) = ( newPiece (head l) (x`div`2,y-1) ,tail l)
+			l = nextpieces g
 			(x,y) = boardSize b
-			t = s{pos=(x `div` 2,y-1)}
+
+
+
+
+lockPiece g@(Game b  p _) = g{board=foldl (flip addBlocktoBoard) b (blocks p)}

@@ -35,8 +35,6 @@ main = do
 	canvasJuego <- glDrawingAreaNew glconfig
 	widgetSetSizeRequest canvasJuego 330 500
 	
-	angle <- newIORef 0.0
-	delta <- newIORef 0.1
 	posicion <- newIORef (0.0, (0.0::GLfloat))
 	
 	onRealize canvasJuego $ withGLDrawingArea canvasJuego $ \_ -> do
@@ -54,13 +52,6 @@ main = do
 			display Block { pos = (round x,round y), col = RED }
 			glDrawableSwapBuffers glwindow
 		return True
- 
-	-- Animar
-	timeoutAddFull (do
-			--idle angle delta
-			widgetQueueDraw canvasJuego
-			return True)
-		priorityDefaultIdle animationWaitTime
 	
 	canvasProx <- glDrawingAreaNew glconfig
 	widgetSetSizeRequest canvasProx 50 70

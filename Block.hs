@@ -16,3 +16,5 @@ data Color = RED
 data Block = Block {	position::(Int,Int) ,
 				color :: Color
 }
+
+

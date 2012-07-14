@@ -1,5 +1,6 @@
 module Board (
 			Board,
+			newBoard
 		) where
 
 

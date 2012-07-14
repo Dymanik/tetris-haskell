@@ -18,6 +18,7 @@ module Main (main) where
 
 import Block
 import Display
+import Game
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.OpenGL
 import Graphics.UI.Gtk.Gdk.Events

@@ -27,7 +27,10 @@ data Color = RED
 			| GREEN
 			| PURPLE
 			| CYAN
+			| GREY
 
 data Block = Block {	pos::(Int,Int) ,
 				col :: Color
 }
+
+
